@@ -515,7 +515,7 @@
 			return id ? `${PHOTO_BASE_URL}?Category=Student&MasterId=${encodeURIComponent(id)}&ImageRefName=Photo` : "";
 		}
 
-		// NEW: Check specifically for "Photo": "T" in JSON
+		// USED ONLY FOR THE "WITH PHOTO" CHECKBOX FILTER
 		function hasPhoto(student) {
 			return String(student["Photo"] || "").trim().toUpperCase() === "T";
 		}
@@ -532,7 +532,7 @@
 				const studentGender = String(student["Gender"] || "").trim().toLowerCase();
 				if (gender && studentGender !== gender) return false;
 				
-				// Use the new "Photo" key logic
+				// Filter strictly based on "Photo": "T"
 				if (onlyPhoto && !hasPhoto(student)) return false;
 				
 				if (!search) return true;
@@ -637,18 +637,27 @@
 			popupHeading.textContent = student["Name"] || "Student Details";
 			popupPosition.textContent = `${currentPosition + 1} / ${filteredStudents.length}`;
 
-			// NEW: Check "Photo" key before attempting to load
-			if (hasPhoto(student) && student["Master ID"]) {
+			// FIXED: ALWAYS attempt to fetch photo if Master ID exists, 
+			// regardless of the "Photo": "T" flag.
+			if (student["Master ID"]) {
 				const masterId = normalizeMasterId(student["Master ID"]);
 				const photoUrl = getPhotoUrl(masterId);
+				
 				studentPhoto.style.display = "none";
 				photoPlaceholder.style.display = "flex";
-				studentPhoto.src = "";
+				studentPhoto.src = ""; // Reset to prevent showing old image briefly
 				
-				studentPhoto.onload = () => { studentPhoto.style.display = "block"; photoPlaceholder.style.display = "none"; };
-				studentPhoto.onerror = () => { studentPhoto.style.display = "none"; photoPlaceholder.style.display = "flex"; };
+				studentPhoto.onload = () => { 
+					studentPhoto.style.display = "block"; 
+					photoPlaceholder.style.display = "none"; 
+				};
+				studentPhoto.onerror = () => { 
+					studentPhoto.style.display = "none"; 
+					photoPlaceholder.style.display = "flex"; 
+				};
 				studentPhoto.src = photoUrl;
 			} else {
+				// No Master ID at all
 				studentPhoto.style.display = "none";
 				photoPlaceholder.style.display = "flex";
 				studentPhoto.src = "";
