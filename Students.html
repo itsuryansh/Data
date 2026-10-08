@@ -1,13 +1,12 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 	<title>Student Records</title>
 	<style>
 		/* =========================================================
-       RESET & VARIABLES (DARK THEME)
+       RESET & VARIABLES (PREMIUM DARK)
     ========================================================= */
 		* {
 			box-sizing: border-box;
@@ -17,159 +16,92 @@
 		}
 		
 		:root {
-			--bg: #0f172a;
-			--surface: #1e293b;
-			--surface-soft: #334155;
-			--border: #334155;
-			--border-dark: #475569;
-			--text: #f1f5f9;
+			--bg: #0b1120;
+			--surface: #151e32;
+			--surface-soft: #1e293b;
+			--border: #2a354e;
+			--border-dark: #334155;
+			--text: #f8fafc;
 			--text-soft: #94a3b8;
 			--text-muted: #64748b;
 			--primary: #3b82f6;
 			--primary-soft: rgba(59, 130, 246, 0.15);
-			--danger: #ef4444;
 			--male: #60a5fa;
 			--female: #f472b6;
-			--shadow-sm: 0 4px 6px -1px rgba(0, 0, 0, 0.3), 0 2px 4px -2px rgba(0, 0, 0, 0.2);
-			--shadow-lg: 0 20px 25px -5px rgba(0, 0, 0, 0.5), 0 8px 10px -6px rgba(0, 0, 0, 0.5);
-			--radius: 12px;
+			--radius: 10px;
 		}
 		
-		html {
-			scroll-behavior: smooth;
-		}
-		
-		body {
-			font-family: 'Inter', system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+		html, body {
+			height: 95dvh; /* Dynamic viewport height for mobile */
+			height: 95vh;
+			overflow: hidden; /* Prevent body scroll */
+			font-family: 'Inter', system-ui, -apple-system, sans-serif;
 			background: var(--bg);
 			color: var(--text);
-			min-height: 100vh;
-			line-height: 1.5;
-		}
-		
-		button, input, select {
-			font: inherit;
 		}
 
 		/* =========================================================
-       LOADING SPINNER
-    ========================================================= */
-		.loader-container {
-			display: flex;
-			flex-direction: column;
-			align-items: center;
-			justify-content: center;
-			padding: 60px 20px;
-			color: var(--text-soft);
-		}
-		.spinner {
-			width: 40px;
-			height: 40px;
-			border: 3px solid var(--surface-soft);
-			border-top-color: var(--primary);
-			border-radius: 50%;
-			animation: spin 0.8s linear infinite;
-			margin-bottom: 16px;
-		}
-		@keyframes spin { to { transform: rotate(360deg); } }
-
-		/* =========================================================
-       APP LAYOUT
+       APP LAYOUT (FLEX COLUMN)
     ========================================================= */
 		.app {
-			width: min(1400px, calc(100% - 32px));
-			margin: 24px auto 40px;
+			height: 100%;
+			max-width: 1400px;
+			margin: 0 auto;
+			padding: 16px;
+			display: flex;
+			flex-direction: column;
+			gap: 12px;
 		}
 
 		/* =========================================================
-       HEADER & STATS
+       MINIMAL HEADER
     ========================================================= */
 		.header-card {
+			flex-shrink: 0;
 			background: var(--surface);
 			border: 1px solid var(--border);
 			border-radius: var(--radius);
-			padding: 24px;
-			box-shadow: var(--shadow-sm);
-			margin-bottom: 16px;
-		}
-		
-		.header-main {
+			padding: 16px 20px;
 			display: flex;
 			align-items: center;
 			justify-content: space-between;
-			gap: 20px;
-			margin-bottom: 24px;
+			gap: 16px;
 			flex-wrap: wrap;
 		}
 		
 		.brand {
 			display: flex;
 			align-items: center;
-			gap: 14px;
+			gap: 12px;
 		}
 		
 		.brand-icon {
-			width: 48px;
-			height: 48px;
+			width: 40px;
+			height: 40px;
 			display: grid;
 			place-items: center;
-			border-radius: 12px;
+			border-radius: 8px;
 			background: var(--primary-soft);
 			color: var(--primary);
 		}
+		.brand-icon svg { width: 22px; height: 22px; }
 		
-		.brand-icon svg { width: 26px; height: 26px; }
-		
-		.brand-title {
-			font-size: 22px;
-			line-height: 1.2;
-			font-weight: 700;
-			letter-spacing: -0.02em;
-		}
-		
-		.brand-subtitle {
-			margin-top: 4px;
-			font-size: 13px;
-			color: var(--text-soft);
-		}
+		.brand-title { font-size: 18px; font-weight: 700; letter-spacing: -0.02em; }
+		.brand-subtitle { font-size: 12px; color: var(--text-muted); margin-top: 2px; }
 		
 		.stats {
 			display: flex;
-			align-items: stretch;
-			gap: 10px;
-			flex-wrap: wrap;
+			gap: 16px;
 		}
-		
-		.stat {
-			min-width: 100px;
-			padding: 10px 16px;
-			border: 1px solid var(--border);
-			border-radius: 10px;
-			background: var(--surface-soft);
-			text-align: center;
-			transition: transform 0.2s;
-		}
-		.stat:hover { transform: translateY(-2px); }
-		
-		.stat-label {
-			font-size: 11px;
-			font-weight: 600;
-			text-transform: uppercase;
-			letter-spacing: 0.05em;
-			color: var(--text-soft);
-		}
-		
-		.stat-value {
-			margin-top: 4px;
-			font-size: 20px;
-			font-weight: 800;
-			color: var(--text);
-		}
+		.stat { text-align: right; }
+		.stat-value { font-size: 18px; font-weight: 800; color: var(--text); line-height: 1; }
+		.stat-label { font-size: 10px; font-weight: 600; text-transform: uppercase; color: var(--text-muted); letter-spacing: 0.05em; margin-top: 4px; }
 
 		/* =========================================================
-       CONTROLS / TOOLBAR
+       TOOLBAR (CLEAN & COMPACT)
     ========================================================= */
 		.toolbar {
+			flex-shrink: 0;
 			display: flex;
 			align-items: center;
 			gap: 10px;
@@ -178,134 +110,114 @@
 		
 		.search-wrap {
 			position: relative;
-			flex: 1 1 280px;
-			max-width: 400px;
+			flex: 1 1 250px;
+			min-width: 200px;
 		}
 		
 		.search-icon {
 			position: absolute;
-			left: 14px;
+			left: 12px;
 			top: 50%;
-			width: 18px;
-			height: 18px;
+			width: 16px;
+			height: 16px;
 			transform: translateY(-50%);
 			color: var(--text-muted);
 			pointer-events: none;
 		}
 		
 		.search-input, .select-control {
-			height: 44px;
+			height: 38px;
 			border: 1px solid var(--border);
-			border-radius: 10px;
-			background: var(--bg);
+			border-radius: 8px;
+			background: var(--surface-soft);
 			color: var(--text);
 			outline: none;
-			transition: border-color 0.2s, box-shadow 0.2s;
-		}
-		
-		.search-input {
-			width: 100%;
-			padding: 0 16px 0 42px;
-		}
-		
-		.select-control {
-			min-width: 140px;
-			padding: 0 12px;
-			cursor: pointer;
-		}
-		
-		.search-input:focus, .select-control:focus {
-			border-color: var(--primary);
-			box-shadow: 0 0 0 3px var(--primary-soft);
-		}
-		
-		.photo-check {
-			height: 44px;
-			display: inline-flex;
-			align-items: center;
-			gap: 8px;
-			padding: 0 14px;
-			border: 1px solid var(--border);
-			border-radius: 10px;
-			background: var(--bg);
-			color: var(--text-soft);
 			font-size: 13px;
-			font-weight: 500;
-			cursor: pointer;
-			user-select: none;
-			transition: background 0.2s;
-		}
-		.photo-check:hover { background: var(--surface-soft); }
-		
-		.photo-check input {
-			appearance: none;
-			width: 18px;
-			height: 18px;
-			border: 1.5px solid var(--border-dark);
-			border-radius: 5px;
-			background: var(--surface);
-			cursor: pointer;
-			position: relative;
 			transition: all 0.2s;
 		}
 		
-		.photo-check input:checked {
-			background: var(--primary);
+		.search-input { width: 100%; padding: 0 12px 0 36px; }
+		.select-control { padding: 0 10px; cursor: pointer; min-width: 110px; }
+		
+		.search-input:focus, .select-control:focus {
 			border-color: var(--primary);
+			box-shadow: 0 0 0 2px var(--primary-soft);
 		}
 		
+		.photo-check {
+			height: 38px;
+			display: inline-flex;
+			align-items: center;
+			gap: 6px;
+			padding: 0 12px;
+			border: 1px solid var(--border);
+			border-radius: 8px;
+			background: var(--surface-soft);
+			color: var(--text-soft);
+			font-size: 12px;
+			font-weight: 500;
+			cursor: pointer;
+			user-select: none;
+		}
+		.photo-check input {
+			appearance: none;
+			width: 16px;
+			height: 16px;
+			border: 1.5px solid var(--border-dark);
+			border-radius: 4px;
+			background: var(--bg);
+			cursor: pointer;
+			position: relative;
+		}
+		.photo-check input:checked { background: var(--primary); border-color: var(--primary); }
 		.photo-check input:checked::after {
 			content: "";
 			position: absolute;
-			width: 5px;
-			height: 9px;
-			left: 5px;
-			top: 2px;
+			width: 4px; height: 8px;
+			left: 5px; top: 1px;
 			border: solid white;
-			border-width: 0 2px 2px 0;
+			border-width: 0 1.5px 1.5px 0;
 			transform: rotate(45deg);
 		}
 		
 		.clear-button {
-			height: 44px;
+			height: 38px;
 			display: inline-flex;
 			align-items: center;
 			justify-content: center;
-			gap: 8px;
 			border: 1px solid var(--border);
-			border-radius: 10px;
-			background: var(--surface-soft);
-			color: var(--text);
-			padding: 0 16px;
+			border-radius: 8px;
+			background: transparent;
+			color: var(--text-soft);
+			padding: 0 12px;
 			cursor: pointer;
-			font-weight: 600;
-			font-size: 13px;
 			transition: all 0.2s;
 		}
-		.clear-button:hover { background: var(--border); }
-		.clear-button svg { width: 16px; height: 16px; }
+		.clear-button:hover { background: var(--surface-soft); color: var(--text); }
+		.clear-button svg { width: 15px; height: 15px; }
 
 		/* =========================================================
-       TABLE
+       TABLE CARD & PREMIUM SCROLLBAR
     ========================================================= */
 		.table-card {
-			overflow: hidden;
+			flex: 1; /* Takes remaining height */
+			display: flex;
+			flex-direction: column;
 			background: var(--surface);
 			border: 1px solid var(--border);
 			border-radius: var(--radius);
-			box-shadow: var(--shadow-sm);
+			overflow: hidden;
 		}
 		
 		.table-toolbar {
-			min-height: 56px;
+			flex-shrink: 0;
+			height: 44px;
 			display: flex;
 			align-items: center;
 			justify-content: space-between;
-			gap: 10px;
-			padding: 0 20px;
+			padding: 0 16px;
 			border-bottom: 1px solid var(--border);
-			background: rgba(30, 41, 59, 0.8);
-			backdrop-filter: blur(8px);
+			background: var(--surface);
 		}
 		
 		.results {
@@ -313,33 +225,32 @@
 			align-items: center;
 			gap: 8px;
 			color: var(--text-soft);
-			font-size: 13px;
-			font-weight: 500;
+			font-size: 12px;
+			font-weight: 600;
 		}
-		
 		.results-dot {
-			width: 8px;
-			height: 8px;
+			width: 6px; height: 6px;
 			border-radius: 50%;
 			background: #22c55e;
-			box-shadow: 0 0 8px rgba(34, 197, 94, 0.4);
-		}
-		
-		.hint {
-			color: var(--text-muted);
-			font-size: 12px;
-			display: none; /* Hidden on mobile, shown on desktop */
+			box-shadow: 0 0 6px rgba(34, 197, 94, 0.5);
 		}
 		
 		.table-wrapper {
-			width: 100%;
+			flex: 1;
 			overflow: auto;
-			max-height: calc(100vh - 280px);
+			position: relative;
 		}
-		
+
+		/* Premium Thin Scrollbar */
+		.table-wrapper::-webkit-scrollbar { width: 6px; height: 6px; }
+		.table-wrapper::-webkit-scrollbar-track { background: transparent; }
+		.table-wrapper::-webkit-scrollbar-thumb { background: var(--border-dark); border-radius: 10px; }
+		.table-wrapper::-webkit-scrollbar-thumb:hover { background: var(--text-muted); }
+		.table-wrapper { scrollbar-width: thin; scrollbar-color: var(--border-dark) transparent; }
+
 		table {
 			width: 100%;
-			min-width: 800px;
+			min-width: 700px;
 			border-collapse: separate;
 			border-spacing: 0;
 		}
@@ -347,7 +258,7 @@
 		th, td {
 			border-right: 1px solid var(--border);
 			border-bottom: 1px solid var(--border);
-			padding: 14px 16px;
+			padding: 12px 16px;
 			font-size: 13px;
 			white-space: nowrap;
 		}
@@ -356,60 +267,79 @@
 		th {
 			position: sticky;
 			top: 0;
-			z-index: 5;
-			background: rgba(30, 41, 59, 0.95);
+			z-index: 10;
+			background: rgba(21, 30, 50, 0.95);
 			backdrop-filter: blur(8px);
-			color: var(--text-soft);
+			color: var(--text-muted);
 			font-size: 11px;
 			font-weight: 700;
 			text-transform: uppercase;
 			letter-spacing: 0.05em;
 		}
+
+		/* Sortable Headers */
+		th.sortable {
+			cursor: pointer;
+			user-select: none;
+			transition: background 0.2s, color 0.2s;
+		}
+		th.sortable:hover {
+			background: var(--surface-soft);
+			color: var(--text);
+		}
+		th.sortable::after {
+			content: '↕';
+			font-size: 10px;
+			margin-left: 6px;
+			opacity: 0.3;
+			transition: opacity 0.2s;
+		}
+		th.sortable.asc::after { content: '↑'; opacity: 1; color: var(--primary); }
+		th.sortable.desc::after { content: '↓'; opacity: 1; color: var(--primary); }
 		
 		tbody tr {
 			cursor: pointer;
 			transition: background 0.15s;
 		}
-		
-		tbody tr:hover {
-			background: var(--surface-soft);
-		}
+		tbody tr:hover { background: var(--surface-soft); }
 		
 		.center { text-align: center; }
-		
 		.gender-male { color: var(--male); font-weight: 600; }
 		.gender-female { color: var(--female); font-weight: 600; }
-		
-		.student-name {
-			font-weight: 600;
-			color: var(--text);
-		}
-		
-		.student-number, .mobile-number {
-			font-variant-numeric: tabular-nums;
-			color: var(--text-soft);
-		}
+		.student-name { font-weight: 600; color: var(--text); }
+		.student-number, .mobile-number { font-variant-numeric: tabular-nums; color: var(--text-soft); }
 		
 		.empty-state {
 			display: none;
 			text-align: center;
 			padding: 60px 20px;
-			color: var(--text-soft);
-		}
-		
-		.empty-title {
-			color: var(--text);
-			font-weight: 700;
-			font-size: 16px;
-		}
-		
-		.empty-description {
-			margin-top: 6px;
-			font-size: 13px;
+			color: var(--text-muted);
 		}
 
 		/* =========================================================
-       MODAL
+       LOADING SPINNER
+    ========================================================= */
+		.loader-container {
+			display: none;
+			flex-direction: column;
+			align-items: center;
+			justify-content: center;
+			height: 100%;
+			color: var(--text-muted);
+			font-size: 13px;
+		}
+		.spinner {
+			width: 32px; height: 32px;
+			border: 3px solid var(--border);
+			border-top-color: var(--primary);
+			border-radius: 50%;
+			animation: spin 0.8s linear infinite;
+			margin-bottom: 12px;
+		}
+		@keyframes spin { to { transform: rotate(360deg); } }
+
+		/* =========================================================
+       MODAL (OPTIMIZED)
     ========================================================= */
 		.modal-backdrop {
 			position: fixed;
@@ -417,77 +347,47 @@
 			display: none;
 			align-items: center;
 			justify-content: center;
-			padding: 20px;
-			background: rgba(0, 0, 0, 0.7);
-			backdrop-filter: blur(6px);
-			-webkit-backdrop-filter: blur(6px);
+			padding: 16px;
+			background: rgba(0, 0, 0, 0.75);
+			backdrop-filter: blur(4px);
 			z-index: 1000;
 			opacity: 0;
 			transition: opacity 0.2s ease;
 		}
-		
-		.modal-backdrop.show {
-			display: flex;
-			opacity: 1;
-		}
+		.modal-backdrop.show { display: flex; opacity: 1; }
 		
 		.detail-modal {
-			width: min(900px, 100%);
-			max-height: calc(100vh - 40px);
-			overflow: hidden;
+			width: min(800px, 100%);
+			max-height: 90dvh;
 			background: var(--surface);
 			border: 1px solid var(--border);
-			border-radius: 16px;
-			box-shadow: var(--shadow-lg);
+			border-radius: 14px;
+			box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
 			display: flex;
 			flex-direction: column;
-			transform: translateY(20px) scale(0.98);
+			transform: translateY(10px) scale(0.98);
 			transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1);
 		}
-		
-		.modal-backdrop.show .detail-modal {
-			transform: translateY(0) scale(1);
-		}
+		.modal-backdrop.show .detail-modal { transform: translateY(0) scale(1); }
 		
 		.modal-header {
-			height: 64px;
+			flex-shrink: 0;
+			height: 56px;
 			display: flex;
 			align-items: center;
 			justify-content: space-between;
-			gap: 15px;
-			padding: 0 20px;
+			padding: 0 16px;
 			border-bottom: 1px solid var(--border);
-			background: var(--surface);
-			flex-shrink: 0;
 		}
+		.modal-title { font-size: 16px; font-weight: 700; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+		.modal-position { font-size: 11px; color: var(--text-muted); margin-top: 2px; }
 		
-		.modal-title {
-			font-size: 18px;
-			font-weight: 700;
-			white-space: nowrap;
-			overflow: hidden;
-			text-overflow: ellipsis;
-		}
-		
-		.modal-position {
-			margin-top: 2px;
-			font-size: 12px;
-			color: var(--text-muted);
-			font-weight: 500;
-		}
-		
-		.modal-buttons {
-			display: flex;
-			gap: 8px;
-		}
-		
+		.modal-buttons { display: flex; gap: 6px; }
 		.icon-button {
-			width: 36px;
-			height: 36px;
-			display: grid;
-			place-items: center;
+			width: 32px; height: 32px;
+			display: grid; place-items: center;
 			border: 1px solid var(--border);
-			border-radius: 8px;
+			border-radius: 6px;
 			background: var(--surface-soft);
 			color: var(--text);
 			cursor: pointer;
@@ -495,239 +395,158 @@
 		}
 		.icon-button:hover:not(:disabled) { background: var(--border); }
 		.icon-button:disabled { opacity: 0.3; cursor: not-allowed; }
-		.icon-button svg { width: 18px; height: 18px; }
+		.icon-button svg { width: 16px; height: 16px; }
 		
 		.modal-body {
-			padding: 24px;
+			padding: 20px;
 			overflow-y: auto;
 			flex: 1;
 		}
+		.modal-body::-webkit-scrollbar { width: 5px; }
+		.modal-body::-webkit-scrollbar-thumb { background: var(--border-dark); border-radius: 10px; }
 
-		/* =========================================================
-       PROFILE & DETAILS
-    ========================================================= */
 		.profile-top {
 			display: grid;
-			grid-template-columns: 160px 1fr;
-			gap: 24px;
-			margin-bottom: 24px;
+			grid-template-columns: 130px 1fr;
+			gap: 20px;
+			margin-bottom: 20px;
 			align-items: start;
 		}
-		
 		.photo-card {
-			overflow: hidden;
-			width: 160px;
-			height: 190px;
-			border: 1px solid var(--border);
-			border-radius: 12px;
-			background: var(--surface-soft);
-			display: grid;
-			place-items: center;
-		}
-		
-		.student-photo {
-			width: 100%;
-			height: 100%;
-			object-fit: cover;
-		}
-		
-		.photo-placeholder {
-			display: flex;
-			flex-direction: column;
-			align-items: center;
-			justify-content: center;
-			gap: 8px;
-			color: var(--text-muted);
-			text-align: center;
-			font-size: 12px;
-		}
-		.photo-placeholder svg { width: 32px; height: 32px; opacity: 0.5; }
-		
-		.basic-grid {
-			display: grid;
-			grid-template-columns: repeat(2, minmax(0, 1fr));
-			gap: 12px;
-		}
-		
-		.detail-card {
-			padding: 12px 14px;
+			width: 130px; height: 160px;
 			border: 1px solid var(--border);
 			border-radius: 10px;
-			background: var(--bg);
+			background: var(--surface-soft);
+			display: grid; place-items: center;
+			overflow: hidden;
 		}
+		.student-photo { width: 100%; height: 100%; object-fit: cover; }
+		.photo-placeholder { display: flex; flex-direction: column; align-items: center; gap: 6px; color: var(--text-muted); font-size: 11px; text-align: center; }
+		.photo-placeholder svg { width: 28px; height: 28px; opacity: 0.4; }
 		
-		.detail-label {
-			margin-bottom: 4px;
-			font-size: 11px;
-			font-weight: 700;
-			text-transform: uppercase;
-			letter-spacing: 0.05em;
-			color: var(--text-muted);
-		}
-		
-		.detail-value {
-			color: var(--text);
-			font-size: 14px;
-			font-weight: 600;
-			word-break: break-word;
-			line-height: 1.4;
-		}
-		
-		.all-details {
+		.basic-grid, .all-details {
 			display: grid;
 			grid-template-columns: repeat(2, minmax(0, 1fr));
-			gap: 12px;
+			gap: 10px;
 		}
-		
 		.full-width { grid-column: 1 / -1; }
 		
-		.modal-footer {
-			margin-top: 24px;
-			display: flex;
-			align-items: center;
-			justify-content: center;
-			gap: 12px;
-			padding: 12px;
-			border-top: 1px solid var(--border);
-			color: var(--text-muted);
-			font-size: 12px;
-		}
-		
-		kbd {
-			display: inline-flex;
-			align-items: center;
-			justify-content: center;
-			min-width: 24px;
-			height: 22px;
-			padding: 0 6px;
+		.detail-card {
+			padding: 10px 12px;
 			border: 1px solid var(--border);
-			border-bottom-width: 2px;
-			border-radius: 6px;
-			background: var(--surface-soft);
-			color: var(--text-soft);
+			border-radius: 8px;
+			background: var(--bg);
+		}
+		.detail-label { font-size: 10px; font-weight: 700; text-transform: uppercase; color: var(--text-muted); letter-spacing: 0.05em; margin-bottom: 4px; }
+		.detail-value { font-size: 13px; font-weight: 600; color: var(--text); word-break: break-word; line-height: 1.4; }
+		
+		.modal-footer {
+			flex-shrink: 0;
+			margin-top: 16px;
+			padding-top: 12px;
+			border-top: 1px solid var(--border);
+			text-align: center;
+			color: var(--text-muted);
 			font-size: 11px;
-			font-weight: 700;
+		}
+		kbd {
+			display: inline-flex; align-items: center; justify-content: center;
+			min-width: 20px; height: 18px; padding: 0 5px;
+			border: 1px solid var(--border); border-bottom-width: 2px;
+			border-radius: 4px; background: var(--surface-soft);
+			color: var(--text-soft); font-size: 10px; font-weight: 700;
 		}
 
 		/* =========================================================
-       RESPONSIVE (MOBILE FIRST TWEAKS)
+       RESPONSIVE
     ========================================================= */
-		@media (min-width: 768px) {
-			.hint { display: block; }
-		}
-
 		@media (max-width: 768px) {
-			.app { width: calc(100% - 24px); margin: 16px auto 24px; }
-			.header-card { padding: 18px; }
-			.header-main { flex-direction: column; align-items: flex-start; }
-			.stats { width: 100%; justify-content: space-between; }
-			.stat { flex: 1; min-width: 0; }
+			.app { padding: 10px; gap: 10px; }
+			.header-card { padding: 12px 16px; flex-direction: column; align-items: flex-start; }
+			.brand-subtitle { display: none; }
+			.stats { width: 100%; justify-content: space-between; margin-top: 8px; padding-top: 12px; border-top: 1px solid var(--border); }
+			.stat { text-align: center; }
 			
-			.toolbar {
-				display: grid;
-				grid-template-columns: 1fr 1fr;
-				gap: 10px;
-			}
-			.search-wrap { grid-column: 1 / -1; max-width: 100%; }
-			.select-control, .photo-check, .clear-button { width: 100%; justify-content: center; }
+			.toolbar { gap: 8px; }
+			.search-wrap { min-width: 100%; order: -1; }
+			.select-control, .photo-check, .clear-button { flex: 1; justify-content: center; font-size: 12px; }
 			
 			.profile-top { grid-template-columns: 1fr; justify-items: center; text-align: center; }
-			.photo-card { width: 140px; height: 170px; }
+			.photo-card { width: 120px; height: 150px; }
 			.basic-grid, .all-details { grid-template-columns: 1fr; }
-			.full-width { grid-column: auto; }
 			
 			.modal-backdrop { padding: 0; align-items: flex-end; }
-			.detail-modal { 
-				width: 100%; 
-				max-height: 90vh; 
-				border-radius: 20px 20px 0 0; 
-				border-bottom: none;
-			}
-			.modal-body { padding: 20px; }
+			.detail-modal { width: 100%; max-height: 95dvh; border-radius: 16px 16px 0 0; border-bottom: none; }
 		}
 	</style>
 </head>
-
 <body>
 	<div class="app">
+		<!-- MINIMAL HEADER -->
 		<section class="header-card">
-			<div class="header-main">
-				<div class="brand">
-					<div class="brand-icon">
-						<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
-							<path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2" />
-							<circle cx="9" cy="7" r="4" />
-							<path d="M22 21v-2a4 4 0 0 0-3-3.87" />
-							<path d="M16 3.13a4 4 0 0 1 0 7.75" />
-						</svg>
-					</div>
-					<div>
-						<div class="brand-title">Student Records</div>
-						<div class="brand-subtitle">Search, filter and explore student information</div>
-					</div>
+			<div class="brand">
+				<div class="brand-icon">
+					<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+						<path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2" />
+						<circle cx="9" cy="7" r="4" />
+						<path d="M22 21v-2a4 4 0 0 0-3-3.87" />
+						<path d="M16 3.13a4 4 0 0 1 0 7.75" />
+					</svg>
 				</div>
-				<div class="stats">
-					<div class="stat">
-						<div class="stat-label">Total</div>
-						<div class="stat-value" id="totalCount">0</div>
-					</div>
-					<div class="stat">
-						<div class="stat-label">Male</div>
-						<div class="stat-value" id="maleCount">0</div>
-					</div>
-					<div class="stat">
-						<div class="stat-label">Female</div>
-						<div class="stat-value" id="femaleCount">0</div>
-					</div>
+				<div>
+					<div class="brand-title">Student Records</div>
+					<div class="brand-subtitle">Tap headers to sort • Tap rows for details</div>
 				</div>
 			</div>
-			<div class="toolbar">
-				<div class="search-wrap">
-					<svg class="search-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-						<circle cx="11" cy="11" r="7" />
-						<path d="m20 20-3.5-3.5" />
-					</svg>
-					<input id="searchInput" class="search-input" type="text" placeholder="Search name, number, mobile..." autocomplete="off">
+			<div class="stats">
+				<div class="stat">
+					<div class="stat-value" id="totalCount">0</div>
+					<div class="stat-label">Total</div>
 				</div>
-				<select id="genderFilter" class="select-control">
-					<option value="">All Gender</option>
-					<option value="Male">Male</option>
-					<option value="Female">Female</option>
-				</select>
-				<select id="sortBy" class="select-control">
-					<option value="Student Number">Sort: Student No</option>
-					<option value="Name">Sort: Name</option>
-					<option value="DOB">Sort: DOB</option>
-				</select>
-				<select id="sortOrder" class="select-control">
-					<option value="asc">A → Z / Low → High</option>
-					<option value="desc">Z → A / High → Low</option>
-				</select>
-				<label class="photo-check">
-					<input type="checkbox" id="photoOnly">
-					<span>Only With Photo</span>
-				</label>
-				<button class="clear-button" id="clearBtn" type="button">
-					<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-						<path d="M3 6h18" />
-						<path d="M8 6V4h8v2" />
-						<path d="M19 6l-1 14H6L5 6" />
-					</svg>
-					Clear
-				</button>
+				<div class="stat">
+					<div class="stat-value" id="maleCount" style="color: var(--male)">0</div>
+					<div class="stat-label">Male</div>
+				</div>
+				<div class="stat">
+					<div class="stat-value" id="femaleCount" style="color: var(--female)">0</div>
+					<div class="stat-label">Female</div>
+				</div>
 			</div>
 		</section>
 
+		<!-- COMPACT TOOLBAR -->
+		<section class="toolbar">
+			<div class="search-wrap">
+				<svg class="search-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+					<circle cx="11" cy="11" r="7" /><path d="m20 20-3.5-3.5" />
+				</svg>
+				<input id="searchInput" class="search-input" type="text" placeholder="Search name, number, mobile..." autocomplete="off">
+			</div>
+			<select id="genderFilter" class="select-control">
+				<option value="">All Gender</option>
+				<option value="Male">Male</option>
+				<option value="Female">Female</option>
+			</select>
+			<label class="photo-check">
+				<input type="checkbox" id="photoOnly">
+				<span>With Photo</span>
+			</label>
+			<button class="clear-button" id="clearBtn" type="button" title="Clear Filters">
+				<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+					<path d="M3 6h18" /><path d="M8 6V4h8v2" /><path d="M19 6l-1 14H6L5 6" />
+				</svg>
+			</button>
+		</section>
+
+		<!-- TABLE CARD -->
 		<section class="table-card">
 			<div class="table-toolbar">
 				<div class="results">
 					<span class="results-dot"></span>
-					<span id="resultInfo">Loading data...</span>
+					<span id="resultInfo">Loading...</span>
 				</div>
-				<div class="hint">Tap or Right-click a row for complete details</div>
 			</div>
 			
-			<!-- Loading State -->
 			<div id="loader" class="loader-container">
 				<div class="spinner"></div>
 				<div>Fetching Data.json...</div>
@@ -737,49 +556,40 @@
 				<table>
 					<thead>
 						<tr>
-							<th class="center">Student Number</th>
-							<th>Name</th>
-							<th>DOB</th>
-							<th class="center">Gender</th>
-							<th>Mobile</th>
+							<th class="center sortable" data-sort="Student Number">Student Number</th>
+							<th class="sortable" data-sort="Name">Name</th>
+							<th class="center sortable" data-sort="DOB">DOB</th>
+							<th class="center sortable" data-sort="Gender">Gender</th>
+							<th class="sortable" data-sort="Mobile">Mobile</th>
 						</tr>
 					</thead>
 					<tbody id="studentTable"></tbody>
 				</table>
 			</div>
 			<div class="empty-state" id="emptyState">
-				<div class="empty-title">No records found</div>
-				<div class="empty-description">Try changing your search or filters.</div>
+				<div style="font-size: 14px; font-weight: 600; color: var(--text); margin-bottom: 4px;">No records found</div>
+				<div style="font-size: 12px;">Try adjusting your search or filters.</div>
 			</div>
 		</section>
 	</div>
 
-	<!-- =====================================================
-     DETAIL MODAL
-===================================================== -->
+	<!-- DETAIL MODAL -->
 	<div class="modal-backdrop" id="modalBackdrop">
 		<div class="detail-modal">
 			<div class="modal-header">
-				<div class="modal-title-wrap" style="min-width: 0; flex: 1;">
+				<div style="min-width: 0; flex: 1;">
 					<div class="modal-title" id="popupHeading">Student Details</div>
 					<div class="modal-position" id="popupPosition">0 / 0</div>
 				</div>
 				<div class="modal-buttons">
 					<button class="icon-button" id="prevBtn" title="Previous">
-						<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-							<path d="m15 18-6-6 6-6" />
-						</svg>
+						<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m15 18-6-6 6-6" /></svg>
 					</button>
 					<button class="icon-button" id="nextBtn" title="Next">
-						<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-							<path d="m9 18 6-6-6-6" />
-						</svg>
+						<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m9 18 6-6-6-6" /></svg>
 					</button>
 					<button class="icon-button" id="closeBtn" title="Close">
-						<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-							<path d="M18 6 6 18" />
-							<path d="m6 6 12 12" />
-						</svg>
+						<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18" /><path d="m6 6 12 12" /></svg>
 					</button>
 				</div>
 			</div>
@@ -789,38 +599,33 @@
 						<img id="studentPhoto" class="student-photo" style="display:none;" alt="Student Photo">
 						<div class="photo-placeholder" id="photoPlaceholder">
 							<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
-								<rect x="3" y="3" width="18" height="18" rx="2" />
-								<circle cx="8.5" cy="8.5" r="1.5" />
-								<path d="m21 15-5-5L5 21" />
+								<rect x="3" y="3" width="18" height="18" rx="2" /><circle cx="8.5" cy="8.5" r="1.5" /><path d="m21 15-5-5L5 21" />
 							</svg>
-							<span>No photo available</span>
+							<span>No Photo</span>
 						</div>
 					</div>
 					<div class="basic-grid" id="basicInfo"></div>
 				</div>
 				<div class="all-details" id="allDetails"></div>
 				<div class="modal-footer">
-					<div class="keyboard-help">
-						<kbd>←</kbd> Prev &nbsp; <kbd>→</kbd> Next &nbsp; <kbd>Esc</kbd> Close
-					</div>
+					<kbd>←</kbd> Prev &nbsp; <kbd>→</kbd> Next &nbsp; <kbd>Esc</kbd> Close
 				</div>
 			</div>
 		</div>
 	</div>
 
-	<!-- =====================================================
-     JAVASCRIPT LOGIC
-===================================================== -->
 	<script>
 		let STUDENTS = [];
 		let filteredStudents = [];
 		let currentPosition = -1;
+		
+		// Sort State
+		let currentSortField = "Student Number";
+		let currentSortOrder = "asc";
 
 		// DOM Elements
 		const searchInput = document.getElementById("searchInput");
 		const genderFilter = document.getElementById("genderFilter");
-		const sortBy = document.getElementById("sortBy");
-		const sortOrder = document.getElementById("sortOrder");
 		const photoOnly = document.getElementById("photoOnly");
 		const clearBtn = document.getElementById("clearBtn");
 		const tableBody = document.getElementById("studentTable");
@@ -847,12 +652,12 @@
 		const PHOTO_BASE_URL = "https://glb.servergi.com:8071/OLAGLBMTR/Services/getImage.ashx";
 
 		/* =========================================================
-		   FETCH DATA FROM JSON
+		   FETCH DATA
 		========================================================= */
 		async function loadData() {
 			try {
 				const response = await fetch('Data.json');
-				if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
+				if (!response.ok) throw new Error(`HTTP ${response.status}`);
 				STUDENTS = await response.json();
 				
 				loader.style.display = 'none';
@@ -862,17 +667,15 @@
 				applyFilters();
 			} catch (error) {
 				console.error("Error loading Data.json:", error);
-				loader.innerHTML = `<div style="color: var(--danger); text-align: center;">
+				loader.innerHTML = `<div style="color: #ef4444; text-align: center;">
 					<strong>Failed to load Data.json</strong><br>
-					<small>Make sure the file exists in the same folder.</small><br>
-					<small style="color: var(--text-muted); margin-top: 8px; display: block;">${error.message}</small>
+					<small>Ensure the file exists in the same folder.</small><br>
+					<small style="opacity: 0.7; margin-top: 8px; display: block;">${error.message}</small>
 				</div>`;
+				loader.style.display = 'flex';
 			}
 		}
 
-		/* =========================================================
-		   STATS
-		========================================================= */
 		function updateStats() {
 			const male = STUDENTS.filter(s => String(s["Gender"] || "").trim().toLowerCase() === "male").length;
 			const female = STUDENTS.filter(s => String(s["Gender"] || "").trim().toLowerCase() === "female").length;
@@ -881,9 +684,6 @@
 			femaleCount.textContent = female.toLocaleString();
 		}
 
-		/* =========================================================
-		   PHOTO LOGIC
-		========================================================= */
 		function normalizeMasterId(value) {
 			if (value === null || value === undefined) return "";
 			let result = String(value).trim();
@@ -901,7 +701,7 @@
 		}
 
 		/* =========================================================
-		   FILTER & SORT
+		   FILTER & SORT LOGIC
 		========================================================= */
 		function applyFilters() {
 			const search = searchInput.value.trim().toLowerCase();
@@ -914,8 +714,8 @@
 				if (onlyPhoto && !hasPhoto(student)) return false;
 				if (!search) return true;
 
-				const searchableFields = ["Student Number", "Name", "Mobile", "DOB", "Gender", "Father Name", "Mother Name"];
-				return searchableFields.some(field => String(student[field] || "").toLowerCase().includes(search));
+				const fields = ["Student Number", "Name", "Mobile", "DOB", "Gender", "Father Name", "Mother Name"];
+				return fields.some(field => String(student[field] || "").toLowerCase().includes(search));
 			});
 
 			sortData();
@@ -923,8 +723,8 @@
 		}
 
 		function sortData() {
-			const field = sortBy.value;
-			const order = sortOrder.value;
+			const field = currentSortField;
+			const order = currentSortOrder;
 			filteredStudents.sort((a, b) => {
 				let A = a[field], B = b[field];
 				if (field === "Student Number" || field === "Mobile") {
@@ -940,14 +740,34 @@
 			});
 		}
 
+		function handleHeaderSort(field) {
+			if (currentSortField === field) {
+				currentSortOrder = currentSortOrder === "asc" ? "desc" : "asc";
+			} else {
+				currentSortField = field;
+				currentSortOrder = "asc";
+			}
+			
+			// Update UI indicators
+			document.querySelectorAll('th.sortable').forEach(th => {
+				th.classList.remove('asc', 'desc');
+				if (th.dataset.sort === currentSortField) {
+					th.classList.add(currentSortOrder);
+				}
+			});
+			
+			sortData();
+			renderTable();
+		}
+
 		/* =========================================================
-		   TABLE RENDER
+		   RENDER TABLE
 		========================================================= */
 		function renderTable() {
 			tableBody.innerHTML = "";
 			if (filteredStudents.length === 0) {
 				emptyState.style.display = "block";
-				resultInfo.textContent = "0 records found";
+				resultInfo.textContent = "0 records";
 				return;
 			}
 			emptyState.style.display = "none";
@@ -960,12 +780,11 @@
 				row.innerHTML = `
 					<td class="center student-number">${escapeHtml(student["Student Number"])}</td>
 					<td class="student-name">${escapeHtml(student["Name"])}</td>
-					<td>${escapeHtml(student["DOB"])}</td>
+					<td class="center">${escapeHtml(student["DOB"])}</td>
 					<td class="center ${gender === "male" ? "gender-male" : "gender-female"}">${escapeHtml(student["Gender"])}</td>
 					<td class="mobile-number">${escapeHtml(student["Mobile"])}</td>
 				`;
 				
-				// Support both click (mobile) and right-click (desktop)
 				row.addEventListener("click", () => { currentPosition = position; openDetails(); });
 				row.addEventListener("contextmenu", event => {
 					event.preventDefault();
@@ -976,16 +795,15 @@
 			});
 			
 			tableBody.appendChild(fragment);
-			resultInfo.textContent = `${filteredStudents.length.toLocaleString()} records found`;
+			resultInfo.textContent = `${filteredStudents.length.toLocaleString()} records`;
 		}
 
 		/* =========================================================
-		   MODAL DETAILS
+		   MODAL LOGIC
 		========================================================= */
 		function openDetails() {
 			const student = filteredStudents[currentPosition];
 			if (!student) return;
-			
 			modalBackdrop.classList.add("show");
 			document.body.style.overflow = "hidden";
 			renderDetails(student);
@@ -993,9 +811,8 @@
 
 		function renderDetails(student) {
 			popupHeading.textContent = student["Name"] || "Student Details";
-			updatePosition();
+			popupPosition.textContent = `${currentPosition + 1} / ${filteredStudents.length}`;
 
-			// Photo
 			const masterId = normalizeMasterId(student["Master ID"]);
 			studentPhoto.style.display = "none";
 			photoPlaceholder.style.display = "flex";
@@ -1008,14 +825,12 @@
 				studentPhoto.src = photoUrl;
 			}
 
-			// Basic details
 			const basicFields = ["Student Number", "Name", "DOB", "Gender", "Mobile", "Email"];
 			basicInfo.innerHTML = "";
 			basicFields.forEach(field => {
 				if(student[field]) basicInfo.appendChild(createCard(field, student[field]));
 			});
 
-			// Remaining details
 			allDetails.innerHTML = "";
 			Object.entries(student).forEach(([key, value]) => {
 				if (basicFields.includes(key) || key === "Master ID" || !value) return;
@@ -1023,22 +838,18 @@
 				if (key === "Address") card.classList.add("full-width");
 				allDetails.appendChild(card);
 			});
-			updateNavButtons();
+			
+			prevBtn.disabled = filteredStudents.length <= 1;
+			nextBtn.disabled = filteredStudents.length <= 1;
 		}
 
 		function createCard(key, value) {
 			const card = document.createElement("div");
 			card.className = "detail-card";
-			card.innerHTML = `
-				<div class="detail-label">${escapeHtml(key)}</div>
-				<div class="detail-value">${escapeHtml(value)}</div>
-			`;
+			card.innerHTML = `<div class="detail-label">${escapeHtml(key)}</div><div class="detail-value">${escapeHtml(value)}</div>`;
 			return card;
 		}
 
-		/* =========================================================
-		   NAVIGATION & UTILS
-		========================================================= */
 		function navigate(direction) {
 			if (filteredStudents.length === 0) return;
 			let newPosition = currentPosition + direction;
@@ -1046,16 +857,6 @@
 			if (newPosition >= filteredStudents.length) newPosition = 0;
 			currentPosition = newPosition;
 			renderDetails(filteredStudents[currentPosition]);
-		}
-
-		function updatePosition() {
-			popupPosition.textContent = `${currentPosition + 1} / ${filteredStudents.length}`;
-		}
-
-		function updateNavButtons() {
-			const disabled = filteredStudents.length <= 1;
-			prevBtn.disabled = disabled;
-			nextBtn.disabled = disabled;
 		}
 
 		function closeModal() {
@@ -1074,17 +875,18 @@
 		========================================================= */
 		searchInput.addEventListener("input", applyFilters);
 		genderFilter.addEventListener("change", applyFilters);
-		sortBy.addEventListener("change", applyFilters);
-		sortOrder.addEventListener("change", applyFilters);
 		photoOnly.addEventListener("change", applyFilters);
 		
 		clearBtn.addEventListener("click", () => {
 			searchInput.value = "";
 			genderFilter.value = "";
-			sortBy.value = "Student Number";
-			sortOrder.value = "asc";
 			photoOnly.checked = false;
 			applyFilters();
+		});
+
+		// Header Sort Clicks
+		document.querySelectorAll('th.sortable').forEach(th => {
+			th.addEventListener("click", () => handleHeaderSort(th.dataset.sort));
 		});
 
 		prevBtn.addEventListener("click", () => navigate(-1));
